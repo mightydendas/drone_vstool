@@ -27,58 +27,13 @@ namespace DroCo.Editor {
             }
         }
 
-        private AlphaMaterialMode alphaMaterialMode = AlphaMaterialMode.Transparent;
-        public AlphaMaterialMode AlphaMaterialMode {
-            get => alphaMaterialMode;
+        private SupportedFileType fileType = SupportedFileType.OBJ;
+        public SupportedFileType FileType {
+            get => fileType;
             set {
-                if (value == alphaMaterialMode)
+                if (value == fileType)
                     return;
-                alphaMaterialMode = value;
-                IsDirty = true;
-            }
-        }
-
-        private bool useUnityNativeNormalCalculator = true;
-        public bool UseUnityNativeNormalCalculator {
-            get => useUnityNativeNormalCalculator;
-            set {
-                if (value == useUnityNativeNormalCalculator)
-                    return;
-                useUnityNativeNormalCalculator = value;
-                IsDirty = true;
-            }
-        }
-
-        private bool useUnityNativeTextureLoader = true;
-        public bool UseUnityNativeTextureLoader {
-            get => useUnityNativeTextureLoader;
-            set {
-                if (value == useUnityNativeTextureLoader)
-                    return;
-                useUnityNativeTextureLoader = value;
-                IsDirty = true;
-            }
-        }
-
-        private bool getCompatibleTextureFormat = true;
-        public bool GetCompatibleTextureFormat {
-            get => getCompatibleTextureFormat;
-            set {
-                if (value == getCompatibleTextureFormat)
-                    return;
-                getCompatibleTextureFormat = value;
-                IsDirty = true;
-            }
-        }
-
-        private bool enforceAlphaChannelTextures = true;
-        public bool EnforceAlphaChannelTextures {
-            get => enforceAlphaChannelTextures;
-
-            set {
-                if (value == enforceAlphaChannelTextures)
-                    return;
-                enforceAlphaChannelTextures = value;
+                fileType = value;
                 IsDirty = true;
             }
         }

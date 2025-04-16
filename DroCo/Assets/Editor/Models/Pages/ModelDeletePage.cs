@@ -10,10 +10,6 @@ namespace DroCo.Editor {
 
         }
 
-        public override void OnEnable() {
-
-        }
-
         public override void OnGUI() {
 
             GUILayout.Label("Are you sure you want to delete this model?", EditorStyles.boldLabel);

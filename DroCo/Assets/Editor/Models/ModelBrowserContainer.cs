@@ -1,4 +1,6 @@
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DroCo.Editor {
     internal class ModelBrowserContainer : EditorContainer {
@@ -10,6 +12,16 @@ namespace DroCo.Editor {
 
         protected override void LoadDefaultPage() {
             defaultPage = new ModelListPage(this);
+        }
+
+        protected override void OnEnableContainer() {
+            if (InstanceCreator.Instance.gameObject == null) {
+
+            }
+        }
+
+        protected override void OnDisableContainer() {
+            DestroyImmediate(InstanceCreator.Instance);
         }
     }
 }

@@ -16,6 +16,9 @@ namespace DroCo.Editor {
 
         public override void OnEnable() {
             _ = ModelsGetAll();
+            foreach (ModelListingComponent component in components) {
+                component.OnEnable();
+            }
         }
 
         public override void OnGUI() {
@@ -37,6 +40,12 @@ namespace DroCo.Editor {
 
             foreach (ModelListingComponent component in components) {
                 component.OnGUI();
+            }
+        }
+
+        public override void OnDisable() {
+            foreach (ModelListingComponent component in components) {
+                component.OnEnable();
             }
         }
 

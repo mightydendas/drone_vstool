@@ -1,4 +1,4 @@
-using TriLibCore.General;
+using System;
 
 namespace DroCo.Editor {
     internal class ModelDetailViewModel {
@@ -11,39 +11,19 @@ namespace DroCo.Editor {
             get; set;
         }
 
-        public string Data {
+        public SupportedFileType FileType {
             get; set;
         }
 
-        public AlphaMaterialMode AlphaMaterialMode {
-            get; set;
-        }
-
-        public bool UseUnityNativeNormalCalculator {
-            get; set;
-        }
-
-        public bool UseUnityNativeTextureLoader {
-            get; set;
-        }
-
-        public bool GetCompatibleTextureFormat {
-            get; set;
-        }
-
-        public bool EnforceAlphaChannelTextures {
+        public byte[] Data {
             get; set;
         }
 
         public ModelDetailViewModel(ModelDto modelDto) {
             Id = modelDto.Id;
             ModelName = modelDto.Name;
-            Data = modelDto.Data;
-            AlphaMaterialMode = modelDto.AlphaMaterialMode;
-            UseUnityNativeNormalCalculator = modelDto.UseUnityNativeNormalCalculator;
-            UseUnityNativeTextureLoader = modelDto.UseUnityNativeTextureLoader;
-            GetCompatibleTextureFormat = modelDto.GetCompatibleTextureFormat;
-            EnforceAlphaChannelTextures = modelDto.EnforceAlphaChannelTextures;
+            FileType = modelDto.FileType;
+            Data = Convert.FromBase64String(modelDto.Data);
         }
     }
 }

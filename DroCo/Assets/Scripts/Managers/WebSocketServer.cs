@@ -77,7 +77,11 @@ public class WebSocketServerBehavior : WebSocketBehavior {
         } else if (handshake_done && msg.type == "data_broadcast") {
 
             Message<DroneFlightData> dfd = JsonUtility.FromJson<Message<DroneFlightData>>(e.Data);
-            
+
+            int start = e.Data.IndexOf("\"frame\": \"") + 10;
+            int end = e.Data.AsSpan()[start..].IndexOf('"');
+            dfd.data.frame = e.Data.Substring(start, end);
+
             UnityMainThreadDispatcher.Instance().Enqueue(UpdateDroneFlightData(dfd.data));
         } else {
             Debug.LogError("Unknown data received! " + e.Data);

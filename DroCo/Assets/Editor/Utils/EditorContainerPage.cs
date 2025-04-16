@@ -13,7 +13,16 @@ namespace DroCo.Editor {
             ViewModel = viewModel;
         }
 
-        public abstract void OnEnable();
-        public abstract void OnGUI();
+        public virtual void OnEnable() {
+
+        }
+
+        public virtual void OnGUI() {
+
+        }
+
+        public virtual void OnDisable() {
+
+        }
     }
 }

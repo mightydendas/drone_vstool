@@ -11,6 +11,7 @@ namespace DroCo.Editor {
         }
 
         public override void OnEnable() {
+            modelPreviewComponent.OnEnable();
         }
 
         public override void OnGUI() {
@@ -22,11 +23,7 @@ namespace DroCo.Editor {
 
             EditorGUILayout.IntField("Id", ViewModel.Id);
             EditorGUILayout.TextField("Model name", ViewModel.ModelName);
-            EditorGUILayout.EnumPopup("Alpha material mode", ViewModel.AlphaMaterialMode);
-            EditorGUILayout.Toggle("Use Unity native normal calculator", ViewModel.UseUnityNativeNormalCalculator);
-            EditorGUILayout.Toggle("Use Unity native texture loader", ViewModel.UseUnityNativeTextureLoader);
-            EditorGUILayout.Toggle("Get compatible texture format", ViewModel.GetCompatibleTextureFormat);
-            EditorGUILayout.Toggle("Enforce alpha channel textures", ViewModel.EnforceAlphaChannelTextures);
+            EditorGUILayout.TextField("File type", ViewModel.FileType.ToString());
 
             GUI.enabled = container.GUIEnabled();
 
@@ -39,6 +36,10 @@ namespace DroCo.Editor {
             }
 
             GUILayout.EndHorizontal();
+        }
+
+        public override void OnDisable() {
+            modelPreviewComponent.OnDisable();
         }
     }
 }

@@ -100,6 +100,10 @@ public class Message : Message<object> {
 
 }
 
+public enum SupportedFileType {
+    FBX, OBJ
+}
+
 public class ModelDto {
 
     [JsonProperty("id")]
@@ -117,28 +121,8 @@ public class ModelDto {
         get; set;
     }
 
-    [JsonProperty("alphaMaterialMode")]
-    public AlphaMaterialMode AlphaMaterialMode {
-        get; set;
-    }
-
-    [JsonProperty("useUnityNativeNormalCalculator")]
-    public bool UseUnityNativeNormalCalculator {
-        get; set;
-    }
-
-    [JsonProperty("useUnityNativeTextureLoader")]
-    public bool UseUnityNativeTextureLoader {
-        get; set;
-    }
-
-    [JsonProperty("getCompatibleTextureFormat")]
-    public bool GetCompatibleTextureFormat {
-        get; set;
-    }
-
-    [JsonProperty("enforceAlphaChannelTextures")]
-    public bool EnforceAlphaChannelTextures {
+    [JsonProperty("fileType")]
+    public SupportedFileType FileType {
         get; set;
     }
 }
@@ -168,28 +152,8 @@ public class ModelCreateDto {
         get; set;
     }
 
-    [JsonProperty("alphaMaterialMode")]
-    public AlphaMaterialMode AlphaMaterialMode {
-        get; set;
-    }
-
-    [JsonProperty("useUnityNativeNormalCalculator")]
-    public bool UseUnityNativeNormalCalculator {
-        get; set;
-    }
-
-    [JsonProperty("useUnityNativeTextureLoader")]
-    public bool UseUnityNativeTextureLoader {
-        get; set;
-    }
-
-    [JsonProperty("getCompatibleTextureFormat")]
-    public bool GetCompatibleTextureFormat {
-        get; set;
-    }
-
-    [JsonProperty("enforceAlphaChannelTextures")]
-    public bool EnforceAlphaChannelTextures {
+    [JsonProperty("fileType")]
+    public SupportedFileType FileType {
         get; set;
     }
 }

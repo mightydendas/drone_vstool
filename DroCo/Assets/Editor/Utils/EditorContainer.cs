@@ -20,9 +20,18 @@ namespace DroCo.Editor {
 
         protected abstract void LoadDefaultPage();
 
+        protected virtual void OnEnableContainer() {
+
+        }
+
+        protected virtual void OnDisableContainer() {
+
+        }
+
         private void OnEnable() {
             LoadDefaultPage();
             Reload();
+            OnEnableContainer();
         }
 
         private void OnGUI() {
@@ -35,8 +44,13 @@ namespace DroCo.Editor {
             }
         }
 
+        private void OnDisable() {
+            OnDisableContainer();
+        }
+
         public void Back(bool reloadPage) {
-            pages.Pop();
+            IEditorContainerPage lastPage = pages.Pop();
+            lastPage.OnDisable();
             if (pages.Count > 0) {
                 if (reloadPage)
                     pages.Peek().OnEnable();

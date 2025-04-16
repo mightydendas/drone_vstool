@@ -8,13 +8,7 @@ namespace DroCo.Editor {
         }
 
         protected override byte[] LoadModel(AssetLoaderOptions assetLoaderOptions) {
-            assetLoaderOptions.AlphaMaterialMode = ViewModel.AlphaMaterialMode;
-            assetLoaderOptions.UseUnityNativeNormalCalculator = ViewModel.UseUnityNativeNormalCalculator;
-            assetLoaderOptions.UseUnityNativeTextureLoader = ViewModel.UseUnityNativeTextureLoader;
-            assetLoaderOptions.GetCompatibleTextureFormat = ViewModel.GetCompatibleTextureFormat;
-            assetLoaderOptions.EnforceAlphaChannelTextures = ViewModel.EnforceAlphaChannelTextures;
-
-            return Convert.FromBase64String(ViewModel.Data);
+            return ViewModel.Data;
         }
     }
 }

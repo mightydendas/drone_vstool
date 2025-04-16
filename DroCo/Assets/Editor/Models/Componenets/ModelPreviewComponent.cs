@@ -11,20 +11,52 @@ namespace DroCo.Editor {
     internal abstract class ModelPreviewComponent<TViewModel> : EditorContainerComponent<TViewModel> {
 
         private int progressPercent = 0;
+        private AssetLoaderOptions optionsInstance;
+        private UnityEditor.Editor optionsEditor;
+
+        private Vector2 scrollPosition;
 
         protected ModelPreviewComponent(EditorContainer container, TViewModel viewModel) : base(container, viewModel) {
 
         }
 
         public override void OnEnable() {
-
+            optionsInstance = AssetLoader.CreateDefaultLoaderOptions(false, true);
         }
 
         public override void OnGUI() {
 
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+            // Select or assign the ScriptableObject
+            optionsInstance = (AssetLoaderOptions) EditorGUILayout.ObjectField(
+                "ScriptableObject",
+                optionsInstance,
+                typeof(ScriptableObject),
+                false
+            );
+
+            if (optionsInstance != null) {
+                // Create the editor for the ScriptableObject if it doesn't exist or has changed
+                if (optionsEditor == null || optionsEditor.target != optionsInstance) {
+                    UnityEngine.Object.DestroyImmediate(optionsEditor);
+                    optionsEditor = UnityEditor.Editor.CreateEditor(optionsInstance);
+                }
+
+                // Draw the ScriptableObject editor
+                optionsEditor.OnInspectorGUI();
+            } else {
+                // Clear the editor if no ScriptableObject is assigned
+                if (optionsEditor != null) {
+                    UnityEngine.Object.DestroyImmediate(optionsEditor);
+                    optionsEditor = null;
+                }
+            }
+
+            EditorGUILayout.EndScrollView();
+
             GUI.enabled = container.GUIEnabled(Application.isPlaying);
 
-            GUILayout.BeginHorizontal();
             string text = "Preview";
             if (!container.GUIEnabled() && progressPercent != 0 && progressPercent != 100) {
                 text = $"{progressPercent}%";
@@ -32,9 +64,15 @@ namespace DroCo.Editor {
             if (GUILayout.Button(text)) {
                 _ = PreviewModel();
             }
-            GUILayout.EndHorizontal();
 
             GUI.enabled = container.GUIEnabled();
+        }
+
+        public override void OnDisable() {
+            // Cleanup the editor when the window is closed
+            if (optionsEditor != null) {
+                UnityEngine.Object.DestroyImmediate(optionsEditor);
+            }
         }
 
         protected abstract byte[] LoadModel(AssetLoaderOptions assetLoaderOptions);

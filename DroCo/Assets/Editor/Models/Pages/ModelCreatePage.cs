@@ -8,15 +8,15 @@ using UnityEngine;
 namespace DroCo.Editor {
     internal class ModelCreatePage : EditorContainerPage<ModelCreateViewModel> {
 
-        private readonly ModelCreatePreviewComponent modelPreview;
-        private bool autoReload = false;
+        private readonly ModelCreatePreviewComponent modelPreviewComponent;
 
+        private bool autoReload = false;
         public ModelCreatePage(EditorContainer container) : base(container, new ModelCreateViewModel()) {
-            modelPreview = new ModelCreatePreviewComponent(container, ViewModel);
+            modelPreviewComponent = new ModelCreatePreviewComponent(container, ViewModel);
         }
 
         public override void OnEnable() {
-
+            modelPreviewComponent.OnEnable();
         }
 
         public override void OnGUI() {
@@ -26,15 +26,19 @@ namespace DroCo.Editor {
             autoReload = GUILayout.Toggle(autoReload, "Auto-reload");
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
             ViewModel.FilePath = EditorGUILayout.TextField("File path", ViewModel.FilePath);
-            ViewModel.Name = EditorGUILayout.TextField("Model name", ViewModel.Name);
-            ViewModel.AlphaMaterialMode = (AlphaMaterialMode) EditorGUILayout.EnumPopup("Alpha material mode", ViewModel.AlphaMaterialMode);
-            ViewModel.UseUnityNativeNormalCalculator = EditorGUILayout.Toggle("Use Unity native normal calculator", ViewModel.UseUnityNativeNormalCalculator);
-            ViewModel.UseUnityNativeTextureLoader = EditorGUILayout.Toggle("Use Unity native texture loader", ViewModel.UseUnityNativeTextureLoader);
-            ViewModel.GetCompatibleTextureFormat = EditorGUILayout.Toggle("Get compatible texture format", ViewModel.GetCompatibleTextureFormat);
-            ViewModel.EnforceAlphaChannelTextures = EditorGUILayout.Toggle("Enforce alpha channel textures", ViewModel.EnforceAlphaChannelTextures);
+            if (GUILayout.Button("Browse")) {
+                ViewModel.FilePath = EditorUtility.OpenFilePanel("File path", "", "zip");
+            }
+            GUILayout.EndHorizontal();
 
-            modelPreview.OnGUI();
+            ViewModel.Name = EditorGUILayout.TextField("Model name", ViewModel.Name);
+            ViewModel.FileType = (SupportedFileType) EditorGUILayout.EnumPopup("File type", ViewModel.FileType);
+
+            GUILayout.Label("Asset loader options", EditorStyles.boldLabel);
+
+            modelPreviewComponent.OnGUI();
 
             GUILayout.BeginHorizontal();
 
@@ -47,6 +51,10 @@ namespace DroCo.Editor {
             }
 
             GUILayout.EndHorizontal();
+        }
+
+        public override void OnDisable() {
+            modelPreviewComponent.OnDisable();
         }
 
         private async Task CreateModel() {
@@ -68,11 +76,7 @@ namespace DroCo.Editor {
                 ModelCreateDto dto = new ModelCreateDto() {
                     Name = ViewModel.Name,
                     Data = Convert.ToBase64String(data),
-                    AlphaMaterialMode = ViewModel.AlphaMaterialMode,
-                    EnforceAlphaChannelTextures = ViewModel.EnforceAlphaChannelTextures,
-                    GetCompatibleTextureFormat = ViewModel.GetCompatibleTextureFormat,
-                    UseUnityNativeNormalCalculator = ViewModel.UseUnityNativeNormalCalculator,
-                    UseUnityNativeTextureLoader = ViewModel.UseUnityNativeTextureLoader,
+                    FileType = ViewModel.FileType,
                 };
 
                 int result = await ModelsClient.ModelCreate(dto);
