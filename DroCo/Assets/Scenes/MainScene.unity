@@ -248,18 +248,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 82200882163522264, guid: d119fc8c88718d0489dfa136f985dfb9,
         type: 3}
-      propertyPath: ClickAction
-      value: 
-      objectReference: {fileID: -204651050884093017, guid: d3d73c852bf20a042ace32e3e368e2b3,
-        type: 3}
-    - target: {fileID: 82200882163522264, guid: d119fc8c88718d0489dfa136f985dfb9,
-        type: 3}
-      propertyPath: PointAction
-      value: 
-      objectReference: {fileID: 8619262363300277781, guid: d3d73c852bf20a042ace32e3e368e2b3,
-        type: 3}
-    - target: {fileID: 82200882163522264, guid: d119fc8c88718d0489dfa136f985dfb9,
-        type: 3}
       propertyPath: ArcGisCamera
       value: 
       objectReference: {fileID: 961739759}
@@ -3154,9 +3142,9 @@ MonoBehaviour:
     z: 291.99999999738554
     SRWkid: 4326
   rotation:
-    Heading: 294.00000396654667
-    Pitch: 50.00000274455783
-    Roll: 0.0000006072744113638745
+    Heading: 294.0000067331364
+    Pitch: 50.000003881274154
+    Roll: 0.0000016959026488347023
   surfacePlacementMode: 0
   surfacePlacementOffset: 0
 --- !u!114 &961739755
@@ -3199,8 +3187,8 @@ MonoBehaviour:
     value:
       x: 0.286321
       y: 0.9203308
-      z: -0.20636511
-      w: -0.16859677
+      z: -0.2063651
+      w: -0.16859679
   m_LocalScale:
     x: 1
     y: 1
