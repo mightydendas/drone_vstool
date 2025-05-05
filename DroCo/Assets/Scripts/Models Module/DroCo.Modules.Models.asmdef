@@ -1,0 +1,22 @@
+{
+    "name": "DroCo.Modules.Models",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:ac53915078c45c341aaca17293dae5a7",
+        "GUID:b4eff41c00957ad40bb06d4945fca22b",
+        "GUID:7ef318b66476ef64ca68a82ee469477f",
+        "GUID:a8683e3dbe9d5c24580f512e02b22195",
+        "GUID:42953675968b7e54d9d71584246db205"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

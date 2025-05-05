@@ -18,16 +18,16 @@ public class RunAsBar : MonoBehaviour {
     }
 
     public void OnDropdownChanged(TMP_Dropdown dropdown) {
-        GameManager.AppMode mode;
+        AppMode mode;
         switch (dropdown.value) {
             case 0:
-                mode = GameManager.AppMode.Client;
+                mode = AppMode.Client;
                 break;
             case 1:
-                mode = GameManager.AppMode.Server;
+                mode = AppMode.Server;
                 break;
             default:
-                mode = GameManager.AppMode.Client;
+                mode = AppMode.Client;
                 break;
         }
 

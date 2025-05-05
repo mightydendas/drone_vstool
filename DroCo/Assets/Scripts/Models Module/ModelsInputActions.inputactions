@@ -1,0 +1,54 @@
+{
+    "name": "ModelsInputActions",
+    "maps": [
+        {
+            "name": "Gizmo",
+            "id": "b1842136-d390-40d4-806e-aad3485b2f89",
+            "actions": [
+                {
+                    "name": "click",
+                    "type": "Button",
+                    "id": "b7f66eb6-ca8c-4a02-be8e-35b96ecba952",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "point",
+                    "type": "Value",
+                    "id": "b47a770e-647f-4cf4-97fd-b6a3cda8dca6",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5aa5d2e4-51e7-4d64-a755-aac6362d2b9d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08863d06-7d4c-4972-9725-20deb7595e1c",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

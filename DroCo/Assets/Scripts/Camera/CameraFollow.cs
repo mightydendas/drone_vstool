@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Esri.ArcGISMapsSDK.Components;
-using Esri.HPFramework;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
