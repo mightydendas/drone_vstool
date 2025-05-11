@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net.Sockets;
 using UnityEngine;
 using System.Net.NetworkInformation;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 public class WebSocketServer : Singleton<WebSocketServer> {
 
@@ -18,6 +20,16 @@ public class WebSocketServer : Singleton<WebSocketServer> {
     public event Action ClientDisconnected;
     public event Action<DroneStaticData> RecievedDrone;
     public event Action<DroneFlightData> RecievedFlightData;
+
+    private Dictionary<string, Action<JObject>> unsolicitedHandlers = new Dictionary<string, Action<JObject>>();
+
+    public void RegisterHandler(string messageType, Action<JObject> handler) {
+        unsolicitedHandlers[messageType] = handler;
+    }
+
+    public void RemoveHandler(string messageType) {
+        unsolicitedHandlers.Remove(messageType);
+    }
 
     private void OnClientConnected() {
         ClientConnected?.Invoke();

@@ -13,7 +13,7 @@ public class UnitList : MonoBehaviour {
     public ListItemButton SpawnListItemDrone(DroneStaticData data, InteractiveObject interactiveObject) {
         GameObject listItemGO = Instantiate(ListItemDronePrefab, List);
         ListItemButton listItem = listItemGO.GetComponent<ListItemButton>();
-        listItem.InitUnitData(data.client_id, data.drone_name, interactiveObject);
+        listItem.InitUnitData(data.ClientId, data.DroneName, interactiveObject);
 
         return listItem;
     }

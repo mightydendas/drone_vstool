@@ -92,13 +92,7 @@ public class PageElementModel : PageElement<ModelSimpleJson>
         {
             try
             {
-                if (!response.Success)
-                {
-                    HandleError("Failed to delete");
-                    return;
-                }
-
-                Debug.Log($"Successfully deleted model {ViewModel.Id}");
+                Debug.Log($"Successfully deleted model {response.Id}");
                 ModelsUIManager.Instance.PageModels.OnRefreshClick();
             }
             catch (Exception ex)

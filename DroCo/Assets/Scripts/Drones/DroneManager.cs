@@ -36,13 +36,13 @@ public class DroneManager : Singleton<DroneManager> {
         List<string> dronesToRemove = new List<string>();
 
         foreach (DroneStaticData dsd in drones) {
-            if (Drones.ContainsKey(dsd.client_id)) {
-                Drones[dsd.client_id].StaticData = dsd;
+            if (Drones.ContainsKey(dsd.ClientId)) {
+                Drones[dsd.ClientId].StaticData = dsd;
             } else {
                 AddDrone(dsd);
             }
 
-            dronesToKeep.Add(dsd.client_id);
+            dronesToKeep.Add(dsd.ClientId);
         }
 
         foreach (KeyValuePair<string, Drone> drone in Drones) {
@@ -59,12 +59,12 @@ public class DroneManager : Singleton<DroneManager> {
     }
 
     public void OnCoreModuleFlightDataRecieved(DroneFlightData flightData) {
-        if (Drones.ContainsKey(flightData.client_id)) {
+        if (Drones.ContainsKey(flightData.ClientId)) {
             GameManager.Instance.CenterMap(flightData);
             if (UseBuffer) {
-                Drones[flightData.client_id].DeliverNewFlightData(flightData);
+                Drones[flightData.ClientId].DeliverNewFlightData(flightData);
             } else {
-                Drones[flightData.client_id].UpdateDroneFlightData(flightData);
+                Drones[flightData.ClientId].UpdateDroneFlightData(flightData);
             }
         } else { //prisla data s neznamym drone ID -> pozadame server o novy seznam dronu
             if (GameManager.Instance.CurrentAppMode == AppMode.Client) {
@@ -74,12 +74,12 @@ public class DroneManager : Singleton<DroneManager> {
     }
 
     public void AddDrone(DroneStaticData dsd) {
-        Debug.Log("adding new drone with id: " + dsd.client_id);
+        Debug.Log("adding new drone with id: " + dsd.ClientId);
 
         GameObject newDroneGameObj = Instantiate(DronePrefab, Scene3DView);
         Drone newDrone = newDroneGameObj.GetComponent<Drone>();
         newDrone.InitDrone(dsd);
-        Drones.Add(dsd.client_id, newDrone);
+        Drones.Add(dsd.ClientId, newDrone);
 
         // Init drone's UI
         newDrone.DroneListItem = UIManager.Instance.MainScreen.UnitList.SpawnListItemDrone(dsd, newDrone);

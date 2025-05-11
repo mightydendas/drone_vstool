@@ -57,9 +57,9 @@ public class WebSocketServerBehavior : WebSocketBehavior {
         handshake_done = true;
 
         DroneStaticData newDrone = new DroneStaticData {
-            client_id = clientID,
-            drone_name = droneData.DroneName,
-            serial = droneData.Serial
+            ClientId = clientID,
+            DroneName = droneData.DroneName,
+            Serial = droneData.Serial
         };
 
         UnityMainThreadDispatcher.Instance().Enqueue(HandleClientConnected());

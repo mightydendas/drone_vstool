@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class PageInstancesViewModel
 {
     public readonly int ModelId;
-    public readonly List<InstanceJson> Instances;
+    public readonly InstanceJson[] Instances;
 
-    public PageInstancesViewModel(int modelId, List<InstanceJson> instances)
+    public PageInstancesViewModel(int modelId, InstanceJson[] instances)
     {
         ModelId = modelId;
         Instances = instances;

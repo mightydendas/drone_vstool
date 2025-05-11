@@ -65,13 +65,7 @@ public class PageElementInstance : PageElement<InstanceJson>
         {
             try
             {
-                if (!response.Success)
-                {
-                    HandleError("Failed to delete");
-                    return;
-                }
-
-                Debug.Log($"Successfully deleted instance {ViewModel.Id}");
+                Debug.Log($"Successfully deleted instance {response.Id}");
                 ModelsUIManager.Instance.PageInstances.OnRefreshClick();
             }
             catch (Exception ex)

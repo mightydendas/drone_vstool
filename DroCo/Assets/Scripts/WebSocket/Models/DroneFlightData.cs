@@ -1,80 +1,105 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Newtonsoft.Json;
 
 [Serializable]
 public class GPS {
-    public double latitude;
-    public double longitude;
+
+    [JsonProperty("latitude")]
+    public double Latitude;
+
+    [JsonProperty("longitude")]
+    public double Longitude;
 
     public override string ToString() {
-        return $"{{latitude:{latitude}, longitude:{longitude}}}";
+        return $"{{latitude:{Latitude}, longitude:{Longitude}}}";
     }
 }
 
 [Serializable]
 public class AircraftOrientation {
-    public double pitch;
-    public double roll;
-    public double yaw;
-    public double compass;
+
+    [JsonProperty("pitch")]
+    public double Pitch;
+
+    [JsonProperty("roll")]
+    public double Roll;
+
+    [JsonProperty("yaw")]
+    public double Yaw;
+
+    [JsonProperty("compass")]
+    public double Compass;
     
     public override string ToString() {
-        return $"{{pitch:{pitch}, roll:{roll}, yaw:{yaw}, compass:{compass}}}";
+        return $"{{pitch:{Pitch}, roll:{Roll}, yaw:{Yaw}, compass:{Compass}}}";
     }
 }
 
 [Serializable]
 public class AircraftVelocity {
-    public double velocity_x;
-    public double velocity_y;
-    public double velocity_z;
+
+    [JsonProperty("velocity_x")]
+    public double X;
+
+    [JsonProperty("velocity_y")]
+    public double Y;
+
+    [JsonProperty("velocity_z")]
+    public double Z;
 
     public override string ToString() {
-        return $"{{x:{velocity_x}, y:{velocity_y}, z:{velocity_z}}}";
+        return $"{{x:{X}, y:{Y}, z:{Z}}}";
     }
 }
 
 [Serializable]
 public class GimbalOrientation {
-    public double pitch;
-    public double roll;
-    public double yaw;
-    public double yaw_relative;
+
+    [JsonProperty("pitch")]
+    public double Pitch;
+
+    [JsonProperty("roll")]
+    public double Roll;
+
+    [JsonProperty("yaw")]
+    public double Yaw;
+
+    [JsonProperty("yaw_relative")]
+    public double YawRelative;
 
     public override string ToString() {
-        return $"{{pitch:{pitch}, roll:{roll}, yaw:{yaw}, yaw_relative:{yaw_relative}}}";
+        return $"{{pitch:{Pitch}, roll:{Roll}, yaw:{Yaw}, yaw_relative:{YawRelative}}}";
     }
 }
 
 [Serializable]
-public class DroneFlightData {
-    public string client_id;
-    public double altitude;
-    public GPS gps;
-    public AircraftOrientation aircraft_orientation;
-    public AircraftVelocity aircraft_velocity;
-    public GimbalOrientation gimbal_orientation;
-    public string timestamp;
-    public string frame;
+public class DroneFlightData : IJsonNotificationData {
 
-    public DroneFlightData() {
-        client_id = "unset";
-        altitude = 0;
-    }
+    [JsonProperty("client_id")]
+    public string ClientId;
+
+    [JsonProperty("altitude")]
+    public double Altitude;
+
+    [JsonProperty("gps")]
+    public GPS Gps;
+
+    [JsonProperty("aircraft_orientation")]
+    public AircraftOrientation AircraftOrientation;
+
+    [JsonProperty("aircraft_velocity")]
+    public AircraftVelocity AircraftVelocity;
+
+    [JsonProperty("gimbal_orientation")]
+    public GimbalOrientation GimbalOrientation;
+
+    [JsonProperty("timestamp")]
+    public string Timestamp;
+
+    [JsonProperty("frame")]
+    public string Frame;
 
     public override string ToString() {
-        return $"{{client_id:{client_id}, altitude:{altitude}, gps:{gps}, aircraft_orientation:{aircraft_orientation}, gimbal_orientation:{gimbal_orientation}, timestamp:{timestamp}}}";
+        return $"{{client_id:{ClientId}, altitude:{Altitude}, gps:{Gps}, aircraft_orientation:{AircraftOrientation}, gimbal_orientation:{GimbalOrientation}, timestamp:{Timestamp}}}";
     }
-
-    //public void SetData(double height, double latitude, double longitute, double pitch, double roll, double yaw, double compass) {
-    //    Altitude = height;
-    //    Latitude = latitude;
-    //    Longitude = longitute;
-    //    Pitch = pitch;
-    //    Roll = roll;
-    //    Yaw = yaw;
-    //    Compass = compass;
-    //}
 }

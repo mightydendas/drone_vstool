@@ -17,6 +17,6 @@ public sealed class ModelUpdateRequestJson : IJsonRequestData
 
 public sealed class ModelUpdateResponseJson : IJsonResponseData
 {
-    [JsonProperty("success", Required = Required.Always)]
-    public bool Success;
+    [JsonProperty("id", Required = Required.Always)]
+    public int Id;
 }

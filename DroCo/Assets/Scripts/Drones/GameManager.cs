@@ -221,25 +221,25 @@ public class GameManager : Singleton<GameManager> {
             //Scene3DViewArcGISMap = Scene3DView.AddComponent<ArcGISMapComponent>();
 
             // Set scene view map and load all possible 3d structures and layers
-            Scene3DViewArcGISMap.OriginPosition = new ArcGISPoint(firstDroneFlightData.gps.longitude, firstDroneFlightData.gps.latitude, firstDroneFlightData.altitude, new ArcGISSpatialReference(4326));
+            Scene3DViewArcGISMap.OriginPosition = new ArcGISPoint(firstDroneFlightData.Gps.Longitude, firstDroneFlightData.Gps.Latitude, firstDroneFlightData.Altitude, new ArcGISSpatialReference(4326));
             Scene3DViewArcGISMap.MapType = ArcGISMapType.Global;
             Scene3DViewArcGISMap.MapTypeChanged += new ArcGISMapComponent.MapTypeChangedEventHandler(CreateArcGISMap);
             CreateArcGISMap();
 
             // Set 2d minimap and center it to the position of the first drone
-            Map2DViewArcGISMap.OriginPosition = new ArcGISPoint(firstDroneFlightData.gps.longitude, firstDroneFlightData.gps.latitude, 0, new ArcGISSpatialReference(4326));
+            Map2DViewArcGISMap.OriginPosition = new ArcGISPoint(firstDroneFlightData.Gps.Longitude, firstDroneFlightData.Gps.Latitude, 0, new ArcGISSpatialReference(4326));
             Map2DViewArcGISMap.MapType = ArcGISMapType.Global;
 
             // Center the main camera
             ArcGISLocationComponent cameraLocationComponent = MainCamera.GetComponent<ArcGISLocationComponent>();
             cameraLocationComponent.enabled = true;
-            cameraLocationComponent.Position = new ArcGISPoint(firstDroneFlightData.gps.longitude, firstDroneFlightData.gps.latitude, firstDroneFlightData.altitude + 50, new ArcGISSpatialReference(4326));
+            cameraLocationComponent.Position = new ArcGISPoint(firstDroneFlightData.Gps.Longitude, firstDroneFlightData.Gps.Latitude, firstDroneFlightData.Altitude + 50, new ArcGISSpatialReference(4326));
             //cameraLocationComponent.Rotation = new ArcGISRotation(65, 68, 0);
 
             // Center the minimap camera
             ArcGISLocationComponent minimapCameraLocationComponent = MinimapCamera.GetComponent<ArcGISLocationComponent>();
             minimapCameraLocationComponent.enabled = true;
-            minimapCameraLocationComponent.Position = new ArcGISPoint(firstDroneFlightData.gps.longitude, firstDroneFlightData.gps.latitude, 500, new ArcGISSpatialReference(4326));
+            minimapCameraLocationComponent.Position = new ArcGISPoint(firstDroneFlightData.Gps.Longitude, firstDroneFlightData.Gps.Latitude, 500, new ArcGISSpatialReference(4326));
 
         }
     }
@@ -258,7 +258,7 @@ public class GameManager : Singleton<GameManager> {
         ArcGISMap arcGISm = Scene3DViewArcGISMap.View.Map;
 
         // Check whether the drone is flying in some known location
-        MapManager.Location knownLocation = MapManager.Instance.GetKnownLocation(firstDroneFlightData.gps);
+        MapManager.Location knownLocation = MapManager.Instance.GetKnownLocation(firstDroneFlightData.Gps);
 
         // Load Scene Layer data for the known location
         foreach (string layerData in MapManager.Instance.Get3DObjectSceneLayerData()) {

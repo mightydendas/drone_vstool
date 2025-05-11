@@ -59,7 +59,7 @@ public class ModelsManager : Singleton<ModelsManager>
 
             var models = response.Models;
 
-            for (int i = 0; i < models.Count; i++)
+            for (int i = 0; i < models.Length; i++)
             {
                 bool canContinue = false;
 
@@ -68,13 +68,13 @@ public class ModelsManager : Singleton<ModelsManager>
 
                 void onModelLoadProgress(int index, string progress)
                 {
-                    string status = $"Model {index + 1}/{models.Count}: {progress}";
+                    string status = $"Model {index + 1}/{models.Length}: {progress}";
                     onProgress.Invoke(status);
                 }
 
                 void onModelLoadSuccess(int index, Model model)
                 {
-                    string status = $"Model {index + 1}/{models.Count}: Getting instaces...";
+                    string status = $"Model {index + 1}/{models.Length}: Getting instaces...";
                     onProgress.Invoke(status);
 
                     ModelsModule.Instance.GetAllInstances(model.Id, onInstancesGetSuccess, onInstancesGetError);

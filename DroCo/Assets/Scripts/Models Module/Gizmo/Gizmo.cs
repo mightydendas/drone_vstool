@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(ArcGISLocationComponent))]
-public class Gizmo : MonoBehaviour
+public class Gizmo : MonoBehaviour 
 {
     [SerializeField]
     private GameObject moveGizmo;

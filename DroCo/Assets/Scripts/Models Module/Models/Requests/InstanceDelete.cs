@@ -8,6 +8,6 @@ public sealed class InstanceDeleteRequestJson : IJsonRequestData
 
 public sealed class InstanceDeleteResponseJson : IJsonResponseData
 {
-    [JsonProperty("success", Required = Required.Always)]
-    public bool Success;
+    [JsonProperty("id", Required = Required.Always)]
+    public int Id;
 }

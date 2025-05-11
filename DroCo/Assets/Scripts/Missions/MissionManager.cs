@@ -115,7 +115,7 @@ public class MissionManager : Singleton<MissionManager> {
                 double longitude = point.longitude * Mathf.Rad2Deg;
 
                 // Add the waypoint to the mission waypoints list
-                segmentPoints.Add(new Waypoint(new GPS() { longitude = longitude, latitude = latitude }, point.altitude));
+                segmentPoints.Add(new Waypoint(new GPS() { Longitude = longitude, Latitude = latitude }, point.altitude));
             }
 
             MissionSegment missionSegment = new MissionSegment();
@@ -168,8 +168,8 @@ public class MissionManager : Singleton<MissionManager> {
             int stepSize = Mathf.RoundToInt(horizontalStep);
 
             foreach (WaypointLine line in segment.Lines) {
-                ArcGISPoint pointA = new ArcGISPoint(line.WaypointA.Coordinates.longitude, line.WaypointA.Coordinates.latitude, line.WaypointA.Altitude, new ArcGISSpatialReference(4326));
-                ArcGISPoint pointB = new ArcGISPoint(line.WaypointB.Coordinates.longitude, line.WaypointB.Coordinates.latitude, line.WaypointB.Altitude, new ArcGISSpatialReference(4326));
+                ArcGISPoint pointA = new ArcGISPoint(line.WaypointA.Coordinates.Longitude, line.WaypointA.Coordinates.Latitude, line.WaypointA.Altitude, new ArcGISSpatialReference(4326));
+                ArcGISPoint pointB = new ArcGISPoint(line.WaypointB.Coordinates.Longitude, line.WaypointB.Coordinates.Latitude, line.WaypointB.Altitude, new ArcGISSpatialReference(4326));
                 double distance = CalculateDistance(pointA, pointB);
                 int numberOfSteps = (int) distance / stepSize;                
 
@@ -223,7 +223,7 @@ public class MissionManager : Singleton<MissionManager> {
         locationComponent.SurfacePlacementMode = ArcGISSurfacePlacementMode.RelativeToGround;
         locationComponent.SurfacePlacementOffset = offset;
 
-        Waypoint wp = new Waypoint(new GPS() { latitude = latitude, longitude = longitude }, altitude: locationComponent.Position.Z);
+        Waypoint wp = new Waypoint(new GPS() { Latitude = latitude, Longitude = longitude }, altitude: locationComponent.Position.Z);
         wp.SetVisual(waypoint);
         missionWaypoints.Add(wp);
 
@@ -238,7 +238,7 @@ public class MissionManager : Singleton<MissionManager> {
         locationComponent.SurfacePlacementMode = ArcGISSurfacePlacementMode.RelativeToGround;
         locationComponent.SurfacePlacementOffset = offset;
 
-        Waypoint wp = new Waypoint(new GPS() { latitude = point.X, longitude = point.Y }, altitude: point.Z);
+        Waypoint wp = new Waypoint(new GPS() { Latitude = point.X, Longitude = point.Y }, altitude: point.Z);
         wp.SetVisual(waypoint);
         missionWaypoints.Add(wp);
 
@@ -297,7 +297,7 @@ public class MissionManager : Singleton<MissionManager> {
 
         foreach (string point in points) {
             string[] coords = point.Split(",");
-            missionWaypoints.Add(new Waypoint(new GPS() { longitude = double.Parse(coords[0]), latitude = double.Parse(coords[1]) }, double.Parse(coords[2])));
+            missionWaypoints.Add(new Waypoint(new GPS() { Longitude = double.Parse(coords[0]), Latitude = double.Parse(coords[1]) }, double.Parse(coords[2])));
         }
 
         SpawnMission();
@@ -309,7 +309,7 @@ public class MissionManager : Singleton<MissionManager> {
         foreach(Waypoint waypoint in missionWaypoints) {
             GameObject point = Instantiate(WaypointPrefab, GameManager.Instance.Scene3DView.transform);
             ArcGISLocationComponent pointLocation = point.AddComponent<ArcGISLocationComponent>();
-            pointLocation.Position = new ArcGISPoint(waypoint.Coordinates.longitude, waypoint.Coordinates.latitude, waypoint.Altitude, new ArcGISSpatialReference(4326));
+            pointLocation.Position = new ArcGISPoint(waypoint.Coordinates.Longitude, waypoint.Coordinates.Latitude, waypoint.Altitude, new ArcGISSpatialReference(4326));
             pointLocation.SurfacePlacementMode = ArcGISSurfacePlacementMode.RelativeToGround;
             pointLocation.SurfacePlacementOffset = 1f;
             WaypointGameObject waypointGO = point.GetComponent<WaypointGameObject>();

@@ -11,6 +11,6 @@ public sealed class ModelDeleteRequestJson : IJsonRequestData
 
 public sealed class ModelDeleteResponseJson : IJsonResponseData
 {
-    [JsonProperty("success", Required = Required.Always)]
-    public bool Success;
+    [JsonProperty("id", Required = Required.Always)]
+    public int Id;
 }

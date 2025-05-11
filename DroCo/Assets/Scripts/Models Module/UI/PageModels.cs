@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PageModelsViewModel
 {
     public int ForceDeleteIndex = -1;
-    public List<ModelSimpleJson> Models = new List<ModelSimpleJson>();
+    public ModelSimpleJson[] Models;
 }
 
 public class PageModels : Page<PageModelsViewModel>

@@ -93,20 +93,20 @@ public class Drone : InteractiveObject, IPointerNotifier {
     public void UpdateDroneFlightData(DroneFlightData flightData) {
         FlightData = flightData;
 
-        GPSLocation.Position = new ArcGISPoint(flightData.gps.longitude, flightData.gps.latitude, flightData.altitude, new ArcGISSpatialReference(4326));
-        DroneModel.localRotation = Quaternion.Euler(-(float) flightData.aircraft_orientation.pitch, (float) flightData.aircraft_orientation.yaw, -(float) flightData.aircraft_orientation.roll);
+        GPSLocation.Position = new ArcGISPoint(flightData.Gps.Longitude, flightData.Gps.Latitude, flightData.Altitude, new ArcGISSpatialReference(4326));
+        DroneModel.localRotation = Quaternion.Euler(-(float) flightData.AircraftOrientation.Pitch, (float) flightData.AircraftOrientation.Yaw, -(float) flightData.AircraftOrientation.Roll);
         //DroneVideoScreen.localRotation = Quaternion.Euler(-(float) flightData.aircraft_orientation.pitch, (float) flightData.aircraft_orientation.yaw, -(float) flightData.aircraft_orientation.roll);
         //DroneVideoScreen.localRotation = Quaternion.Euler(-(float) flightData.gimbal_orientation.pitch, (float) flightData.gimbal_orientation.yaw, -(float) flightData.gimbal_orientation.roll);
-        DroneVideoScreen.localRotation = Quaternion.Euler(-(float) flightData.gimbal_orientation.pitch, (float) flightData.aircraft_orientation.yaw + (float) flightData.gimbal_orientation.yaw_relative, -(float) flightData.gimbal_orientation.roll);
-        ThirdPersonView.localRotation = Quaternion.Euler(0f, (float) flightData.aircraft_orientation.yaw, 0f);
+        DroneVideoScreen.localRotation = Quaternion.Euler(-(float) flightData.GimbalOrientation.Pitch, (float) flightData.AircraftOrientation.Yaw + (float) flightData.GimbalOrientation.YawRelative, -(float) flightData.GimbalOrientation.Roll);
+        ThirdPersonView.localRotation = Quaternion.Euler(0f, (float) flightData.AircraftOrientation.Yaw, 0f);
         
         drone2DRepresentation.UpdateFlightData(flightData);
 
-        DroneListItem.UpdateHeight(flightData.altitude);
+        DroneListItem.UpdateHeight(flightData.Altitude);
         DroneListItem.UpdateDistance(Vector3.Distance(Camera.main.transform.position, this.transform.position));
 
-        if (flightData.frame != "") {
-            byte[] frame = Convert.FromBase64String(flightData.frame);
+        if (flightData.Frame != "") {
+            byte[] frame = Convert.FromBase64String(flightData.Frame);
 
             JpegPlayerTexture.LoadImage(frame);
 
