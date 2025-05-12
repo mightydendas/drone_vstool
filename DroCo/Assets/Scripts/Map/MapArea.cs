@@ -9,7 +9,7 @@ public abstract class MapArea {
     public abstract void InitArea();
 
     public virtual bool IsPointInsideArea(GPS point) {
-        Vector2 p = new Vector2((float)point.latitude, (float)point.longitude);
+        Vector2 p = new Vector2((float)point.Latitude, (float)point.Longitude);
         int j = Area.Length - 1;
         bool c = false;
         for (int i = 0; i < Area.Length; j = i++)

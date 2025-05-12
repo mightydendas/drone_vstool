@@ -1,0 +1,107 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DroneManager : Singleton<DroneManager> {
+
+    [SerializeField]
+    private bool UseBuffer = false;
+
+    public IDictionary<string, Drone> Drones = new Dictionary<string, Drone>();
+
+    public GameObject DronePrefab;
+    public Transform Scene3DView;
+
+    public void Start() {
+
+        CoreModule.Instance.Activated += OnCoreModuleActivated;
+        CoreModule.Instance.Deactivated += OnCoreModuleDeactivated;
+
+        WebSocketServer.Instance.RecievedDrone += AddDrone;
+    }
+
+    private void OnCoreModuleActivated() {
+        CoreModule.Instance.DroneListRecieved += OnCoreModuleDroneListRecieved;
+        CoreModule.Instance.FlightDataRecieved += OnCoreModuleFlightDataRecieved;
+        CoreModule.Instance.SendDroneListRequest();
+    }
+
+    private void OnCoreModuleDeactivated() {
+        CoreModule.Instance.DroneListRecieved -= OnCoreModuleDroneListRecieved;
+        CoreModule.Instance.FlightDataRecieved -= OnCoreModuleFlightDataRecieved;
+        DestroyDroneAll();
+    }
+
+    public void OnCoreModuleDroneListRecieved(DroneStaticData[] drones) {
+        List<string> dronesToKeep = new List<string>();
+        List<string> dronesToRemove = new List<string>();
+
+        foreach (DroneStaticData dsd in drones) {
+            if (Drones.ContainsKey(dsd.ClientId)) {
+                Drones[dsd.ClientId].StaticData = dsd;
+            } else {
+                AddDrone(dsd);
+            }
+
+            dronesToKeep.Add(dsd.ClientId);
+        }
+
+        foreach (KeyValuePair<string, Drone> drone in Drones) {
+            if (!dronesToKeep.Contains(drone.Key)) {
+                dronesToRemove.Add(drone.Key);
+            }
+        }
+
+        foreach (string droneId in dronesToRemove) {
+            Drones.TryGetValue(droneId, out Drone droneToBeRemoved);
+            Drones.Remove(droneId);
+            Destroy(droneToBeRemoved.gameObject);
+        }
+    }
+
+    public void OnCoreModuleFlightDataRecieved(DroneFlightData flightData) {
+        if (Drones.ContainsKey(flightData.ClientId)) {
+            GameManager.Instance.CenterMap(flightData);
+            if (UseBuffer) {
+                Drones[flightData.ClientId].DeliverNewFlightData(flightData);
+            } else {
+                Drones[flightData.ClientId].UpdateDroneFlightData(flightData);
+            }
+        } else { //prisla data s neznamym drone ID -> pozadame server o novy seznam dronu
+            if (GameManager.Instance.CurrentAppMode == AppMode.Client) {
+                CoreModule.Instance.SendDroneListRequest();
+            }
+        }
+    }
+
+    public void AddDrone(DroneStaticData dsd) {
+        Debug.Log("adding new drone with id: " + dsd.ClientId);
+
+        GameObject newDroneGameObj = Instantiate(DronePrefab, Scene3DView);
+        Drone newDrone = newDroneGameObj.GetComponent<Drone>();
+        newDrone.InitDrone(dsd);
+        Drones.Add(dsd.ClientId, newDrone);
+
+        // Init drone's UI
+        newDrone.DroneListItem = UIManager.Instance.MainScreen.UnitList.SpawnListItemDrone(dsd, newDrone);
+        RenderTexture renderTexture = new RenderTexture(1280, 720, 24);
+        newDrone.TPVCamera.targetTexture = renderTexture;
+        newDrone.DroneListItem.InitCameraViewTexture(renderTexture);
+    }
+
+    public void SetDroneModelsActive(bool active) {
+        foreach (KeyValuePair<string, Drone> drone in Drones) {
+            drone.Value.DroneModel.gameObject.SetActive(active);
+        }
+    }
+
+    public void DestroyDroneAll() {
+        foreach (KeyValuePair<string, Drone> drone in Drones) {
+            DestroyDrone(drone.Value);
+        }
+        Drones.Clear();
+    }
+
+    public void DestroyDrone(Drone drone) {
+        Destroy(drone.gameObject);
+    }
+}

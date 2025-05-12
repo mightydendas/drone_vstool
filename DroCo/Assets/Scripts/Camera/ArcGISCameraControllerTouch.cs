@@ -22,10 +22,8 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-#endif
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(HPTransform))]
@@ -34,12 +32,10 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
     private ArcGISMapComponent arcGISMapComponent;
     private HPTransform hpTransform;
 
-#if ENABLE_INPUT_SYSTEM
 	public ArcGISCameraControllerComponentActions CameraActions;
 	private InputAction UpControls;
 	private InputAction ForwardControls;
 	private InputAction RightControls;
-#endif
 
     private float TranslationSpeed = 0.0f;
     private float RotationSpeed = 100.0f;
@@ -66,50 +62,38 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
 
 
     private void Awake() {
-#if ENABLE_INPUT_SYSTEM
         EnhancedTouchSupport.Enable();
-#endif
 
         lastMouseScreenPosition = GetMousePosition();
 
         Application.focusChanged += FocusChanged;
 
-#if ENABLE_INPUT_SYSTEM
 		CameraActions = new ArcGISCameraControllerComponentActions();
 		UpControls = CameraActions.Move.Up;
 		ForwardControls = CameraActions.Move.Forward;
 		RightControls = CameraActions.Move.Right;
-#endif
     }
 
     void OnEnable() {
         arcGISMapComponent = gameObject.GetComponentInParent<ArcGISMapComponent>();
         hpTransform = GetComponent<HPTransform>();
 
-#if ENABLE_INPUT_SYSTEM
 		UpControls.Enable();
 		ForwardControls.Enable();
 		RightControls.Enable();
-#endif
     }
 
     private void OnDisable() {
-#if ENABLE_INPUT_SYSTEM
 		UpControls.Disable();
 		ForwardControls.Disable();
 		RightControls.Disable();
-#endif
     }
 
     private Vector3 GetMousePosition() {
         if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count >= 1) {
             return UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches[0].screenPosition;
         } else {
-#if ENABLE_INPUT_SYSTEM
             return Mouse.current.position.ReadValue();
-#else
-            return Input.mousePosition;
-#endif
         }
     }
 
@@ -120,24 +104,10 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
 
         var totalTranslation = double3.zero;
 
-#if ENABLE_INPUT_SYSTEM
 		up *= UpControls.ReadValue<float>() * TranslationSpeed * Time.deltaTime;
 		right *= RightControls.ReadValue<float>() * TranslationSpeed * Time.deltaTime;
 		forward *= ForwardControls.ReadValue<float>() * TranslationSpeed * Time.deltaTime;
 		totalTranslation += up + right + forward;
-#else
-
-        Action<string, double3> handleAxis = (axis, vector) => {
-            if (Input.GetAxis(axis) != 0) {
-                totalTranslation += vector * Input.GetAxis(axis) * TranslationSpeed * Time.deltaTime;
-            }
-        };
-
-        handleAxis("Vertical", forward);
-        handleAxis("Horizontal", right);
-        handleAxis("Jump", up);
-        handleAxis("Submit", -up);
-#endif
 
         return totalTranslation;
     }
@@ -152,11 +122,7 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
 
             return -PinchSpeed * (Vector2.Distance(touch1Previous, touch2Previous) - Vector2.Distance(touch1.screenPosition, touch2.screenPosition));
         } else if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) {
-#if ENABLE_INPUT_SYSTEM
             return Mouse.current.scroll.ReadValue().normalized.y;
-#else
-            return Input.mouseScrollDelta.y;
-#endif
         } else {
             return 0f;
         }
@@ -166,11 +132,7 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
         if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 1) {
             return true;
         } else if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) {
-#if ENABLE_INPUT_SYSTEM
             return Mouse.current.leftButton.ReadValue() == 1;
-#else
-            return Input.GetMouseButton(0);
-#endif
         } else {
             return false;
         }
@@ -180,11 +142,7 @@ public class ArcGISCameraControllerTouch : MonoBehaviour {
         if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 3) {
             return true;
         } else if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) {
-#if ENABLE_INPUT_SYSTEM
             return Mouse.current.rightButton.ReadValue() == 1;
-#else
-            return Input.GetMouseButton(1);
-#endif
         } else {
             return false;
         }

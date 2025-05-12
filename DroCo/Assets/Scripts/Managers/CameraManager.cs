@@ -53,7 +53,7 @@ public class CameraManager : Singleton<CameraManager> {
 
     private void Update() {
         if (GetMouseScollValue() != 0f && FollowingTarget) {
-            if (GameManager.Instance.CurrentDisplayState == GameManager.DisplayState.Scene3DView) {
+            if (GameManager.Instance.CurrentDisplayState == DisplayState.Scene3DView) {
                 StopFollowingTarget();
             }
         }

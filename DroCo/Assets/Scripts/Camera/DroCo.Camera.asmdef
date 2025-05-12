@@ -1,0 +1,20 @@
+{
+    "name": "DroCo.Camera",
+    "rootNamespace": "",
+    "references": [
+        "Unity.Mathematics",
+        "Unity.InputSystem",
+        "Esri.HPFramework",
+        "ArcGISMapsSDK",
+        "ArcGISMapsSDK.Samples"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

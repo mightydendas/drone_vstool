@@ -31,8 +31,8 @@ public class Drone2D : MonoBehaviour {
     }
 
     public void UpdateFlightData(DroneFlightData flightData) {
-        GPSLocation.Position = new ArcGISPoint(flightData.gps.longitude, flightData.gps.latitude, 0, new ArcGISSpatialReference(4326));
-        GPSLocation.Rotation = new ArcGISRotation(flightData.aircraft_orientation.yaw, 0, 0);
+        GPSLocation.Position = new ArcGISPoint(flightData.Gps.Longitude, flightData.Gps.Latitude, 0, new ArcGISSpatialReference(4326));
+        GPSLocation.Rotation = new ArcGISRotation(flightData.AircraftOrientation.Yaw, 0, 0);
     }
 
     public void Highlight(bool highlight) {

@@ -1,0 +1,17 @@
+{
+    "name": "DroCo.Modules.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:42953675968b7e54d9d71584246db205",
+        "GUID:b4eff41c00957ad40bb06d4945fca22b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
