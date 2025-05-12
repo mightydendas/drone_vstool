@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
 using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -110,6 +111,11 @@ public class PageInstanceCreate : Page<InstanceCreateViewModel>
         {
             ViewModel.Instance.Location.Rotation = new ArcGISRotation(heading, pitch, roll);
         }
+
+        if (float.TryParse(inputScale.text, out float scale))
+        {
+            ViewModel.Instance.transform.localScale = Vector3.one * scale;
+        }
     }
 
     private void Update()
@@ -126,6 +132,8 @@ public class PageInstanceCreate : Page<InstanceCreateViewModel>
             inputRoll.text = ViewModel.Instance.Location.Rotation.Roll.ToString();
         if (!inputHeading.isFocused)
             inputHeading.text = ViewModel.Instance.Location.Rotation.Heading.ToString();
+        if (!inputScale.isFocused)
+            inputScale.text = ViewModel.Instance.transform.localScale.x.ToString();
     }
 
     private bool ValidateViewModel()

@@ -11,7 +11,7 @@ public class Gizmo : MonoBehaviour
     [SerializeField]
     private GameObject rotateGizmo;
 
-    public MonoBehaviour ArcGisCamera;
+    public ArcGISCameraControllerTouch ArcGisCamera;
 
     public InputActionReference ClickAction;
 

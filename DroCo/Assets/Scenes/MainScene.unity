@@ -5976,7 +5976,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 22272
+    m_Bits: 55040
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -8285,7 +8285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveGizmo: {fileID: 7319075669407915145}
   rotateGizmo: {fileID: 5674459737279295653}
-  ArcGisCamera: {fileID: 961739756}
+  ArcGisCamera: {fileID: 961739759}
   ClickAction: {fileID: -204651050884093017, guid: d3d73c852bf20a042ace32e3e368e2b3,
     type: 3}
   PointAction: {fileID: 8619262363300277781, guid: d3d73c852bf20a042ace32e3e368e2b3,
@@ -8305,6 +8305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23539968edab52409e2df7dd55b65e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragAxis: {x: 0, y: 0, z: 1}
 --- !u!4 &1315348043212382531
 Transform:
   m_ObjectHideFlags: 0
@@ -8336,7 +8337,7 @@ GameObject:
   - component: {fileID: 9199663648966735797}
   - component: {fileID: 9167782224781768946}
   - component: {fileID: 1840550630357031858}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Rotate Gizmo Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8392,6 +8393,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e1b8f000c21b54ab7be1dda070680b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 0.2
+  rotationAxis: {x: 0, y: 1, z: 0}
 --- !u!33 &1873097940156892443
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -8514,7 +8517,7 @@ GameObject:
   - component: {fileID: 82200882186180330}
   - component: {fileID: 2335437162593847119}
   - component: {fileID: 3456272214405518696}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8895,7 +8898,7 @@ GameObject:
   - component: {fileID: 3605164305387206284}
   - component: {fileID: 8834198583957398647}
   - component: {fileID: 198933771655695651}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Move Gizmo Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8915,7 +8918,7 @@ GameObject:
   - component: {fileID: 6492098498074761674}
   - component: {fileID: 6523979917886641805}
   - component: {fileID: 4339683870198134221}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Rotate Gizmo Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8942,6 +8945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e1b8f000c21b54ab7be1dda070680b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 0.2
+  rotationAxis: {x: 0, y: 0, z: 1}
 --- !u!4 &4475425955734601986
 Transform:
   m_ObjectHideFlags: 0
@@ -9000,6 +9005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e1b8f000c21b54ab7be1dda070680b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 0.2
+  rotationAxis: {x: 1, y: 0, z: 0}
 --- !u!4 &5085170671610657583
 Transform:
   m_ObjectHideFlags: 0
@@ -9027,6 +9034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23539968edab52409e2df7dd55b65e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragAxis: {x: 1, y: 0, z: 0}
 --- !u!1 &5674459737279295653
 GameObject:
   m_ObjectHideFlags: 0
@@ -9036,7 +9044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1315348043212382531}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Rotate Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9056,7 +9064,7 @@ GameObject:
   - component: {fileID: 2490876344563295207}
   - component: {fileID: 2449987687053257888}
   - component: {fileID: 4949570913758564320}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Rotate Gizmo X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9155,7 +9163,7 @@ GameObject:
   - component: {fileID: 6859019169310162926}
   - component: {fileID: 1702743855286988053}
   - component: {fileID: 8069040390005310529}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Move Gizmo Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9213,7 +9221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7323994763050515382}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Move Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9250,6 +9258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23539968edab52409e2df7dd55b65e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragAxis: {x: 0, y: 1, z: 0}
 --- !u!33 &8414598679939730553
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9353,7 +9362,7 @@ GameObject:
   - component: {fileID: 8765889248863318496}
   - component: {fileID: 3546528424386781979}
   - component: {fileID: 5290723748065937999}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Move Gizmo X
   m_TagString: Untagged
   m_Icon: {fileID: 0}

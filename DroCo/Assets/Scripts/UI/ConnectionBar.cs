@@ -14,7 +14,7 @@ public class ConnectionBar : MonoBehaviour {
     private Image outline;
 
     public void SaveServerIP(string serverIP) {
-        //GameManager.Instance.SaveServerIP(serverIP); //TODOREF
+        GameManager.Instance.SaveServerIP(serverIP);
     }
 
     public void SetServerIP(string serverIP) {

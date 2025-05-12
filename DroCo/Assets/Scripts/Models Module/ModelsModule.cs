@@ -140,7 +140,7 @@ public class ModelsModule : Singleton<ModelsModule>
             },
         };
 
-        WebSocketClient.Instance.Send(request, onRecieved, onError);
+        WebSocketClient.Instance.Send(request, onRecieved, onError, 20);
 
         void onRecieved(JObject data)
         {
@@ -217,7 +217,7 @@ public class ModelsModule : Singleton<ModelsModule>
             },
         };
 
-        WebSocketClient.Instance.Send(request, onRecieved, onError);
+        WebSocketClient.Instance.Send(request, onRecieved, onError, 20);
 
         void onRecieved(JObject data)
         {

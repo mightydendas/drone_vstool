@@ -39,16 +39,12 @@ public class Instance : MonoBehaviour
 
     public void UpdateInstanceObject(GameObject prefab)
     {
-        Debug.Log("Has arg prefab: " + prefab != null);
-        Debug.Log("Has instanceObject: " + instanceObject != null);
-
         if (instanceObject != null)
         {
             Destroy(instanceObject);
         }
 
         instanceObject = Instantiate(prefab);
-        Debug.Log("Created instanceObject: " + instanceObject != null);
         instanceObject.transform.parent = transform;
         instanceObject.SetActive(true);
     }
