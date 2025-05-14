@@ -193,7 +193,7 @@ public class PageInstanceCreate : Page<InstanceCreateViewModel>
         ModelsUIManager.Instance.Gizmo.gameObject.SetActive(false);
         ModelsUIManager.Instance.Gizmo.Instance = null;
 
-        if (ViewModel != null)
+        if (ViewModel != null && ViewModel.Instance != null)
         {
             Destroy(ViewModel.Instance.gameObject);
         }

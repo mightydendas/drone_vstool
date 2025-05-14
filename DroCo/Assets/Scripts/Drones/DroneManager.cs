@@ -20,22 +20,21 @@ public class DroneManager : Singleton<DroneManager> {
     }
 
     private void OnCoreModuleActivated() {
-        CoreModule.Instance.DroneListRecieved += OnCoreModuleDroneListRecieved;
         CoreModule.Instance.FlightDataRecieved += OnCoreModuleFlightDataRecieved;
-        CoreModule.Instance.SendDroneListRequest();
+
+        CoreModule.Instance.SendDroneListRequest(OnCoreModuleDroneListRecieved, Debug.LogError);
     }
 
     private void OnCoreModuleDeactivated() {
-        CoreModule.Instance.DroneListRecieved -= OnCoreModuleDroneListRecieved;
         CoreModule.Instance.FlightDataRecieved -= OnCoreModuleFlightDataRecieved;
         DestroyDroneAll();
     }
 
-    public void OnCoreModuleDroneListRecieved(DroneStaticData[] drones) {
+    public void OnCoreModuleDroneListRecieved(DroneListResponse response) {
         List<string> dronesToKeep = new List<string>();
         List<string> dronesToRemove = new List<string>();
 
-        foreach (DroneStaticData dsd in drones) {
+        foreach (DroneStaticData dsd in response.Drones) {
             if (Drones.ContainsKey(dsd.ClientId)) {
                 Drones[dsd.ClientId].StaticData = dsd;
             } else {
@@ -68,7 +67,7 @@ public class DroneManager : Singleton<DroneManager> {
             }
         } else { //prisla data s neznamym drone ID -> pozadame server o novy seznam dronu
             if (GameManager.Instance.CurrentAppMode == AppMode.Client) {
-                CoreModule.Instance.SendDroneListRequest();
+                CoreModule.Instance.SendDroneListRequest(OnCoreModuleDroneListRecieved, Debug.LogError);
             }
         }
     }

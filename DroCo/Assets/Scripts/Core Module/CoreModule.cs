@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using Newtonsoft.Json.Linq;
 
@@ -6,7 +6,7 @@ public class CoreModule : Singleton<CoreModule> {
 
     public event Action Activated;
     public event Action Deactivated;
-    public event Action<DroneStaticData[]> DroneListRecieved;
+
     public event Action<DroneFlightData> FlightDataRecieved;
 
     private void Start() {
@@ -17,7 +17,6 @@ public class CoreModule : Singleton<CoreModule> {
     private void OnWebSocketConnected(HelloResponse helloResponse) {
         if (helloResponse.Modules.Contains(nameof(CoreModule))) {
             WebSocketClient.Instance.RegisterHandler("data_broadcast", OnFlightDataRecieved);
-            WebSocketClient.Instance.RegisterHandler("drone_list", OnDroneListRecieved);
             Activated?.Invoke();
         }
     }
@@ -25,43 +24,39 @@ public class CoreModule : Singleton<CoreModule> {
     private void OnWebSocketDisconnected() {
         if (WebSocketClient.Instance != null) {
             WebSocketClient.Instance.RemoveHandler("data_broadcast");
-            WebSocketClient.Instance.RemoveHandler("drone_list");
         }
         Deactivated?.Invoke();
     }
 
-    public void SendDroneListRequest() {
+    public void SendDroneListRequest(Action<DroneListResponse> onSuccess, Action<string> onError) {
 
         RequestJson request = new RequestJson() {
             Type = "drone_list",
             RequestId = Guid.NewGuid().ToString(),
         };
 
-        WebSocketClient.Instance.Send(request, OnDroneListRecieved, OnError);
-    }
+        WebSocketClient.Instance.Send(request, onRecieved, onError);
 
-    private void OnDroneListRecieved(JObject data) {
-        DroneListResponse droneList = data.ToObject<DroneListResponse>();
+        void onRecieved(JObject data) {
+            DroneListResponse droneList = data.ToObject<DroneListResponse>();
 
-        if (droneList == null) {
-            Debug.LogError($"Failed to parse data: {data}");
+            if (droneList == null) {
+                onError?.Invoke($"Failed to deserialize {data}");
+                return;
+            }
+
+            onSuccess.Invoke(droneList);
         }
-
-        DroneListRecieved?.Invoke(droneList.Drones);
     }
 
     private void OnFlightDataRecieved(JObject data) {
         DroneFlightData flightData = data.ToObject<DroneFlightData>();
 
         if (flightData == null) {
-            Debug.LogError($"Failed to parse data: {data}");
+            Debug.LogError($"Failed to deserialize {data}");
         }
 
         FlightDataRecieved?.Invoke(flightData);
-    }
-
-    private void OnError(string error) {
-        Debug.LogError(error);
     }
 }
 

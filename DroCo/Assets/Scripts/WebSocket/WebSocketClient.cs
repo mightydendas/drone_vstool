@@ -75,7 +75,7 @@ public class WebSocketClient : Singleton<WebSocketClient> {
         
         websocket.SendText(json);
 
-        pendingRequest.StartTimeout(timeoutSeconds);
+        // pendingRequest.StartTimeout(timeoutSeconds);
     }
 
     private void OnMessageReceived(byte[] data) {

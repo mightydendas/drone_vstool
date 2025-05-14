@@ -7,8 +7,8 @@ public class ModelsModule : Singleton<ModelsModule>
     public event Action Activated;
     public event Action Deactivated;
 
-    public event Action<ModelJson> ModelCreated;
-    public event Action<ModelJson> ModelUpdated;
+    public event Action<ModelSimpleJson> ModelCreated;
+    public event Action<ModelSimpleJson> ModelUpdated;
     public event Action<int> ModelDeleted;
 
     public event Action<InstanceJson> InstanceCreated;
@@ -140,7 +140,7 @@ public class ModelsModule : Singleton<ModelsModule>
             },
         };
 
-        WebSocketClient.Instance.Send(request, onRecieved, onError, 20);
+        WebSocketClient.Instance.Send(request, onRecieved, onError);
 
         void onRecieved(JObject data)
         {
@@ -217,7 +217,7 @@ public class ModelsModule : Singleton<ModelsModule>
             },
         };
 
-        WebSocketClient.Instance.Send(request, onRecieved, onError, 20);
+        WebSocketClient.Instance.Send(request, onRecieved, onError);
 
         void onRecieved(JObject data)
         {

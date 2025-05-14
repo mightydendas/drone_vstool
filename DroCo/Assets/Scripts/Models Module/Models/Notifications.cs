@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 public sealed class ModelCreatedNotificationJson : IJsonNotificationData
 {
     [JsonProperty("model", Required = Required.Always)]
-    public ModelJson Model;
+    public ModelSimpleJson Model;
 }
 
 public sealed class ModelUpdatedNotificationJson : IJsonNotificationData
 {
     [JsonProperty("model", Required = Required.Always)]
-    public ModelJson Model;
+    public ModelSimpleJson Model;
 }
 
 public sealed class ModelDeletedNotificationJson : IJsonNotificationData

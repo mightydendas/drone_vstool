@@ -29,14 +29,182 @@ public class ModelsManager : Singleton<ModelsManager>
         options.UseUnityNativeTextureLoader = true;
     }
 
-    private void OnModelsModuleDeactivated()
-    {
-        models.Clear();
-    }
-
     private void OnModelsModuleActivated()
     {
+        ModelsModule.Instance.ModelCreated += OnModelsModuleModelCreated;
+        ModelsModule.Instance.ModelUpdated += OnModelsModuleModelUpdated;
+        ModelsModule.Instance.ModelDeleted += OnModelsModuleModelDeleted;
+
+        ModelsModule.Instance.InstanceCreated += OnModelsModuleInstanceCreated;
+        ModelsModule.Instance.InstanceUpdated += OnModelsModuleInstanceUpdated;
+        ModelsModule.Instance.InstanceDeleted += OnModelsModuleInstanceDeleted;
+
         StartCoroutine(DelayLoad());
+    }
+
+    private void OnModelsModuleInstanceDeleted(int instanceId)
+    {
+        if (instances.TryGetValue(instanceId, out Instance instance))
+        {
+            if (instance.Model.Instances.Contains(instance))
+                instance.Model.Instances.Remove(instance);
+            Destroy(instance.gameObject);
+        }
+    }
+
+    private void OnModelsModuleInstanceUpdated(InstanceJson instanceJson)
+    {
+        if (instances.TryGetValue(instanceJson.Id, out Instance instance))
+        {
+            instance.UpdateInstanceData(instanceJson);
+        }
+        else
+        {
+            if (models.TryGetValue(instanceJson.ModelId, out Model model))
+            {
+                CreateInstance(model, instanceJson);
+            }
+        }
+    }
+
+    private void OnModelsModuleInstanceCreated(InstanceJson json)
+    {
+        if (models.TryGetValue(json.ModelId, out Model model))
+        {
+            CreateInstance(model, json);
+        }
+    }
+
+    private void OnModelsModuleModelDeleted(int id)
+    {
+        if (models.TryGetValue(id, out Model model))
+        {
+            foreach (var instance in model.Instances)
+            {
+                Destroy(instance.gameObject);
+                instances.Remove(instance.Id);
+            }
+            Destroy(model.gameObject);
+            models.Remove(id);
+        }
+    }
+
+    private void OnModelsModuleModelUpdated(ModelSimpleJson modelSimple)
+    {
+        LoadModel(modelSimple.Id, onModelLoadProgress, onModelLoadSuccess, onModelLoadError);
+
+        void onModelLoadProgress(string progress)
+        {
+            Debug.Log($"Loading updated model {modelSimple.Id}: {progress}");
+        }
+
+        void onModelLoadSuccess(Model newModel)
+        {
+            Debug.Log($"Updated model {newModel.Id} loaded");
+
+            if (models.TryGetValue(newModel.Id, out Model oldModel))
+            {
+                foreach (var instance in oldModel.Instances)
+                    instance.UpdateInstanceObject(newModel.Prefab);
+                Destroy(oldModel.gameObject);
+                models[newModel.Id] = newModel;
+            }
+            else
+            {
+                ModelsModule.Instance.GetAllInstances(newModel.Id, onInstancesGetSuccess, onInstancesGetError);
+
+                void onInstancesGetSuccess(InstanceGetAllResponseJson response)
+                {
+                    foreach (var instanceJson in response.Instances)
+                    {
+                        try
+                        {
+                            CreateInstance(newModel, instanceJson);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogException(ex);
+                            Debug.LogError($"Faield to create instance of model {newModel.Id}: {ex.Message}.");
+                        }
+                    }
+                }
+
+                void onInstancesGetError(string error)
+                {
+                    Debug.LogError($"Failed to get instances of model {newModel.Id}: {error}");
+                }
+            }
+        }
+
+        void onModelLoadError(string error)
+        {
+            Debug.LogError($"Failed to load updated model {modelSimple.Id}: {error}");
+        }
+    }
+
+    private void OnModelsModuleModelCreated(ModelSimpleJson modelSimple)
+    {
+        LoadModel(modelSimple.Id, onModelLoadProgress, onModelLoadSuccess, onModelLoadError);
+
+        void onModelLoadProgress(string progress)
+        {
+            Debug.Log($"Loading created model {modelSimple.Id}: {progress}");
+        }
+
+        void onModelLoadSuccess(Model newModel)
+        {
+            Debug.Log($"Created model {newModel.Id} loaded");
+
+            if (models.TryGetValue(newModel.Id, out Model oldModel))
+            {
+                foreach (var instance in oldModel.Instances)
+                {
+                    Destroy(instance.gameObject);
+                    instances.Remove(newModel.Id);
+                }
+                Destroy(oldModel.gameObject);
+                models.Remove(oldModel.Id);
+            }
+
+            ModelsModule.Instance.GetAllInstances(newModel.Id, onInstancesGetSuccess, onInstancesGetError);
+
+            void onInstancesGetSuccess(InstanceGetAllResponseJson response)
+            {
+                foreach (var instanceJson in response.Instances)
+                {
+                    try
+                    {
+                        CreateInstance(newModel, instanceJson);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                        Debug.LogError($"Faield to create instance of model {newModel.Id}: {ex.Message}.");
+                    }
+                }
+            }
+
+            void onInstancesGetError(string error)
+            {
+                Debug.LogError($"Failed to get instances of model {newModel.Id}: {error}");
+            }
+        }
+
+        void onModelLoadError(string error)
+        {
+            Debug.LogError($"Failed to load updated model {modelSimple.Id}: {error}");
+        }
+    }
+
+    private void OnModelsModuleDeactivated()
+    {
+        foreach (var model in models.Values)
+            Destroy(model.gameObject);
+        models.Clear();
+
+        foreach (var instance in instances.Values)
+            Destroy(instance.gameObject);
+        instances.Clear();
     }
 
     private IEnumerator DelayLoad()
@@ -182,7 +350,7 @@ public class ModelsManager : Singleton<ModelsManager>
         onProgress.Invoke("Model loaded");
     }
 
-    
+
 
     private void OnMaterialsLoad(int id, Action<string> onProgress, Action<Model> onSuccess, AssetLoaderContext context)
     {
